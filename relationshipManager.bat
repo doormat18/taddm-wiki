@@ -1,0 +1,1 @@
+@call ..\..\bin\jython_coll.bat relationshipManager.py %*
