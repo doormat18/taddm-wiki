@@ -1,0 +1,321 @@
+<xml>
+    <general>
+      <!-- default is 10, changed to 5 to keep things under control -->
+      <maxHopsLimit>5</maxHopsLimit>
+      <firstTierOnly>true</firstTierOnly>
+      <infoLevel>GENERAL</infoLevel>
+    </general>
+    <compositionConfiguration>
+      <includeInComposition>
+        <include type="simple.SComputerSystem"/>
+        <include type="simple.SDeployableComponent"/>
+        <include type="simple.SFunction"/>
+        <include type="simple.SGroup"/>
+        <include type="simple.SSoftwareServer"/>
+      </includeInComposition>
+      <excludeFromComposition>
+        <exclude type="customCollection.GroupingPattern"/>
+        <exclude type="process.AccessCollection"/>
+
+        <!-- Below this line are exclusions in addition to the defaults -->
+        
+        <!-- Important to note that this section only comes into play after the relationship has 
+             been traversed. So if the excludedRelationships section excludes the relationship then
+             this section will not be relevant for the target -->
+        
+        <!-- The following section excludes the WebSphere components that aren't servers or clusters.
+             We want the relationships to be traversed so that the hardware and clusters are added
+             but all the WebSphere topology makes the map messy. -->
+        <exclude type="app.j2ee.websphere.WebSphereNodeAgent"/>
+        <exclude type="app.j2ee.websphere.WebSphereDeploymentManager"/>
+        <exclude type="app.j2ee.websphere.WebSphereCell"/>
+        <exclude type="app.j2ee.websphere.WebSphereNode"/>
+        <!-- don't show the remote file systems as DeployableComponents in the final graph -->
+        <exclude type="sys.RemoteFileSystem"/>
+      </excludeFromComposition>
+    </compositionConfiguration>
+    <traversalConfiguration>
+      <excludedRelationships>
+        <exclude relation="{any}" source="sys.SnmpSystemGroup" target="{any}"/>
+		<exclude relation="{any}" source="{any}" target="sys.SnmpSystemGroup"/>
+		<exclude relation="{any}" source="sys.PageSpace" target="{any}"/>
+		<exclude relation="{any}" source="{any}" target="sys.PageSpace"/>
+		<exclude relation="{any}" source="{any}" target="dev.Controller"/>
+		<exclude relation="{any}" source="dev.Controller" target="{any}"/>
+		<exclude relation="{any}" source="{any}" target="dev.MediaAccessDevice"/>
+		<exclude relation="{any}" source="dev.MediaAccessDevice" target="{any}"/>
+		<exclude relation="{any}" source="dev.ControlledBy" target="{any}"/>
+		<exclude relation="{any}" source="{any}" target="dev.ControlledBy"/>
+        <exclude relation="{any}" source="sys.zOS.CICSTransaction" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.zOS.CICSTransaction"/>
+        <exclude relation="{any}" source="sys.zOS.CICSProgram" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.zOS.CICSProgram"/>
+        <exclude relation="{any}" source="app.web.iis.IIsParameter" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.web.iis.IIsParameter"/>
+        <exclude relation="{any}" source="app.messaging.mq.MQBufferPool" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.mq.MQBufferPool"/>
+        <exclude relation="{any}" source="app.messaging.mq.MQStorageClass" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.mq.MQStorageClass"/>
+        <exclude relation="{any}" source="admin.AdminInfo" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="admin.AdminInfo"/>
+        <exclude relation="{any}" source="app.AppConfig" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.AppConfig"/>
+        <exclude relation="{any}" source="app.AppDescriptor" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.AppDescriptor"/>
+        <exclude relation="{any}" source="app.ConfigFile" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.ConfigFile"/>
+        <exclude relation="{any}" source="app.db.DatabaseModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.DatabaseModule"/>
+        <exclude relation="{any}" source="app.db.db2.Db2BufferPool" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.db2.Db2BufferPool"/>
+        <exclude relation="{any}" source="app.db.db2.Db2Container" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.db2.Db2Container"/>
+        <exclude relation="{any}" source="app.db.db2.Db2DatabaseConfigValue" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.db2.Db2DatabaseConfigValue"/>
+        <exclude relation="{any}" source="app.db.db2.Db2InstanceConfigValue" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.db2.Db2InstanceConfigValue"/>
+        <exclude relation="{any}" source="app.db.db2.Db2SystemConfigValue" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.db2.Db2SystemConfigValue"/>
+        <exclude relation="{any}" source="app.db.db2.Db2TableSpace" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.db2.Db2TableSpace"/>
+        <exclude relation="{any}" source="app.db.mssql.SqlServerConfig" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.mssql.SqlServerConfig"/>
+        <exclude relation="{any}" source="app.db.oracle.OracleInitValue" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.oracle.OracleInitValue"/>
+        <exclude relation="{any}" source="app.db.oracle.OracleParameter" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.oracle.OracleParameter"/>
+        <exclude relation="{any}" source="app.db.oracle.OracleRedoLogFile" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.oracle.OracleRedoLogFile"/>
+        <exclude relation="{any}" source="app.db.oracle.OracleSchema" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.oracle.OracleSchema"/>
+        <exclude relation="{any}" source="app.db.oracle.OracleSGAValue" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.oracle.OracleSGAValue"/>
+        <exclude relation="{any}" source="app.db.oracle.OracleTableSpace" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.oracle.OracleTableSpace"/>
+        <exclude relation="{any}" source="app.db.sybase.SybaseLogin" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.sybase.SybaseLogin"/>
+        <exclude relation="{any}" source="app.db.sybase.SybaseRole" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.sybase.SybaseRole"/>
+        <exclude relation="{any}" source="app.db.sybase.SybaseTable" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.sybase.SybaseTable"/>
+        <exclude relation="{any}" source="app.db.sybase.SybaseThreshold" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.sybase.SybaseThreshold"/>
+        <exclude relation="{any}" source="app.db.sybase.SybaseUser" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.db.sybase.SybaseUser"/>
+        <exclude relation="{any}" source="app.j2ee.AppClientModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.AppClientModule"/>
+        <exclude relation="{any}" source="app.j2ee.ConnectorModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.ConnectorModule"/>
+        <exclude relation="{any}" source="app.j2ee.EJB" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.EJB"/>
+        <exclude relation="{any}" source="app.j2ee.EJBModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.EJBModule"/>
+        <exclude relation="{any}" source="app.j2ee.oracleapp.OracleAppWebModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.oracleapp.OracleAppWebModule"/>
+        <exclude relation="{any}" source="app.j2ee.weblogic.WebLogicJMSDestination" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.weblogic.WebLogicJMSDestination"/>
+        <exclude relation="{any}" source="app.j2ee.weblogic.WebLogicWebModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.weblogic.WebLogicWebModule"/>
+        <exclude relation="{any}" source="only app.j2ee.WebModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="only app.j2ee.WebModule"/>
+        <exclude relation="only relation.DeployedTo" source="app.j2ee.websphere.WebSphereCell" target="app.j2ee.J2EEApplication"/>
+        <exclude relation="only relation.DeployedTo" source="app.j2ee.J2EEApplication" target="app.j2ee.websphere.WebSphereCell"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereJ2EEResourceProperty" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereJ2EEResourceProperty"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereJDBCDataSource" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereJDBCDataSource"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereJVMSettings" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereJVMSettings"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereLibraryRef" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereLibraryRef"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereProcessDefinition" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereProcessDefinition"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereProcessMonitoringPolicy" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereProcessMonitoringPolicy"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereServlet" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereServlet"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereSessionTuningParams" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereSessionTuningParams"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereVariable" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereVariable"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereWebModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.j2ee.websphere.WebSphereWebModule"/>
+        <exclude relation="{any}" source="app.lotus.DominoTransactionLogging" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.lotus.DominoTransactionLogging"/>
+        <exclude relation="{any}" source="app.lotus.LotusConfig" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.lotus.LotusConfig"/>
+        <exclude relation="{any}" source="app.messaging.exchange.ClientAccess" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.exchange.ClientAccess"/>
+        <exclude relation="{any}" source="app.messaging.exchange.EdgeTransport" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.exchange.EdgeTransport"/>
+        <exclude relation="{any}" source="app.messaging.exchange.ExchangeLink" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.exchange.ExchangeLink"/>
+        <exclude relation="{any}" source="app.messaging.exchange.ExchangeQueue" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.exchange.ExchangeQueue"/>
+        <exclude relation="{any}" source="app.messaging.exchange.ExchangeScheduleInterval" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.exchange.ExchangeScheduleInterval"/>
+        <exclude relation="{any}" source="app.messaging.mq.MQProcess" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.messaging.mq.MQProcess"/>
+        <exclude relation="{any}" source="app.ProcessPool" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.ProcessPool"/>
+        <exclude relation="{any}" source="only app.SoftwareModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="only app.SoftwareModule"/>
+        <exclude relation="{any}" source="app.web.apache.ApacheModule" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.web.apache.ApacheModule"/>
+        <exclude relation="{any}" source="app.web.iis.IIsWebVirtualDir" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.web.iis.IIsWebVirtualDir"/>
+        <exclude relation="{any}" source="only core.LogicalContent" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="only core.LogicalContent"/>
+        <exclude relation="{any}" source="customCollection.BizAppDescriptor" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="customCollection.BizAppDescriptor"/>
+        <exclude relation="{any}" source="customCollection.CustomCollection" target="{any}"/>
+        <exclude relation="{any}" source="customCollection.GroupingPattern" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="customCollection.GroupingPattern"/>
+        <exclude relation="{any}" source="customCollection.Node" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="customCollection.Node"/>
+        <exclude relation="{any}" source="customCollection.Path" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="customCollection.Path"/>
+        <exclude relation="{any}" source="customCollection.Selector" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="customCollection.Selector"/>
+        <exclude relation="{any}" source="dev.DiskPartition" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="dev.DiskPartition"/>
+        <exclude relation="{any}" source="dev.SCSIPath" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="dev.SCSIPath"/>
+        <exclude relation="{any}" source="dev.SCSIProtocolEndPoint" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="dev.SCSIProtocolEndPoint"/>
+        <exclude relation="{any}" source="dev.vios.NpivViosVirtualAdapter" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="dev.vios.NpivViosVirtualAdapter"/>
+        <exclude relation="{any}" source="extattrib.UserData" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="extattrib.UserData"/>
+        <exclude relation="{any}" source="net.BindAddress" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.BindAddress"/>
+        <exclude relation="{any}" source="net.Fqdn" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.Fqdn"/>
+        <exclude relation="{any}" source="net.IpAddress" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.IpAddress"/>
+        <exclude relation="{any}" source="net.IpRoute" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.IpRoute"/>
+        <exclude relation="{any}" source="net.LogicalConnection" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.LogicalConnection"/>
+        <!-- The following NetworkConnection filters can be removed but with extreme caution, 
+                 NetworkConnections might connect large amount of Computer Systems -->
+        <exclude relation="{any}" source="net.NetworkConnection" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.NetworkConnection"/>
+        <exclude relation="{any}" source="net.NetworkInterface" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.NetworkInterface"/>
+        <exclude relation="{any}" source="net.TransportEndpoint" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="net.TransportEndpoint"/>
+        <exclude relation="{any}" source="phys.physcomp.PhysicalComponent" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physcomp.PhysicalComponent"/>
+        <exclude relation="{any}" source="phys.physconn.PhysicalConnector" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physconn.PhysicalConnector"/>
+        <exclude relation="{any}" source="phys.physlink.PhysicalLink" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physlink.PhysicalLink"/>
+        <exclude relation="{any}" source="phys.PhysicalLocation" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.PhysicalLocation"/>
+        <exclude relation="{any}" source="phys.physpkg.Fan" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physpkg.Fan"/>
+        <exclude relation="{any}" source="phys.physpkg.OtherPhysicalPackage" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physpkg.OtherPhysicalPackage"/>
+        <exclude relation="{any}" source="phys.physpkg.PhysicalPackage" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physpkg.PhysicalPackage"/>
+        <exclude relation="{any}" source="phys.physpkg.PowerSupply" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physpkg.PowerSupply"/>
+        <exclude relation="{any}" source="phys.physpkg.Sensor" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="phys.physpkg.Sensor"/>
+        <exclude relation="{any}" source="process.AccessCollection" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="process.AccessCollection"/>
+        <exclude relation="{any}" source="process.Composite.SwitchComposite" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="process.Composite.SwitchComposite"/>
+        <exclude relation="{any}" source="process.ManagementSoftwareSystem" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="process.ManagementSoftwareSystem"/>
+        <exclude relation="{any}" source="process.OrganizationalEntity" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="process.OrganizationalEntity"/>
+        <exclude relation="{any}" source="process.Permission" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="process.Permission"/>
+        <exclude relation="{any}" source="process.Role" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="process.Role"/>
+        <exclude relation="{any}" source="sys.blade.Alert" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.blade.Alert"/>
+        <exclude relation="{any}" source="sys.CPU" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.CPU"/>
+        <exclude relation="{any}" source="sys.DataFile" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.DataFile"/>
+        <exclude relation="{any}" source="sys.DNSLookup" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.DNSLookup"/>
+        <exclude relation="{any}" source="sys.DNSResolveEntry" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.DNSResolveEntry"/>
+        <exclude relation="{any}" source="sys.FileSystemExport" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.FileSystemExport"/>
+        <exclude relation="{any}" source="sys.LocalFileSystem" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.LocalFileSystem"/>
+        <exclude relation="{any}" source="sys.Memory" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.Memory"/>
+        <exclude relation="{any}" source="sys.NamingContext" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.NamingContext"/>
+        <exclude relation="{any}" source="sys.ProcessFileSystemMapping" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.ProcessFileSystemMapping"/>
+        <exclude relation="{any}" source="sys.RuntimeProcess" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.RuntimeProcess"/>
+        <exclude relation="{any}" source="sys.ServiceAccessPoint" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.ServiceAccessPoint"/>
+        <exclude relation="{any}" source="sys.SoftwareComponent" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.SoftwareComponent"/>
+        <exclude relation="{any}" source="sys.vmware.DataCenter" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.vmware.DataCenter"/>
+        <exclude relation="{any}" source="sys.vmware.VMWarePortGroup" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.vmware.VMWarePortGroup"/>
+        <exclude relation="{any}" source="sys.windows.WindowsService" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.windows.WindowsService"/>
+        <exclude relation="{any}" source="uri.AccessResolveEntry" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="uri.AccessResolveEntry"/>
+        <exclude relation="{any}" source="uri.URIAccessor" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="uri.URIAccessor"/>
+        <exclude relation="{any}" source="uri.URIAccessPoint" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="uri.URIAccessPoint"/>
+        <!-- Removing network infrastructure behind Switch that is connected to a server -->
+        <exclude relation="only app.dependencies.SwitchToDevice" source="only sys.UnitaryComputerSystem" target="only sys.UnitaryComputerSystem"/>
+        <!-- For displaying Storage Array in BA topology for Virtual Machine -->
+        <exclude relation="only relation.Uses" source="sys.vmware.VMWareDataStore" target="sys.vmware.VmwareUnitaryComputerSystem"/>
+        
+        <!-- Below this line are exclusions in addition to the defaults -->
+        
+        <!-- Removing IP dependencies. In environments with shared servers IP dependencies end up
+             including too many components unrelated to the application. -->
+        <exclude relation="only app.dependencies.IpDependency" source="{any}" target="{any}"/>
+        <!-- Without these, the DNS servers are added to just about every mapping -->
+        <exclude relation="{any}" source="sys.DNSService" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="sys.DNSService"/>
+        <!-- Clusters can include many servers not related to the mapping so we don't particularly
+             want databases related at the cluster level -->
+        <exclude relation="only app.dependencies.TransactionalDependency" source="app.j2ee.websphere.WebSphereCluster" target="app.db.db2.Db2Server"/>
+        <!-- FunctionalGroup relationship traversal adds a bunch of components that are unrelated -->
+        <exclude relation="{any}" source="app.FunctionalGroup" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="app.FunctionalGroup"/>
+        <!-- Another group component that adds unrelated components -->
+        <exclude relation="{any}" source="core.SystemSpecificCollection" target="{any}"/>
+        <exclude relation="{any}" source="{any}" target="core.SystemSpecificCollection"/>
+        <!-- The cluster to cell and cell to cluster relationships add too many unrelated WebSphere
+             components -->
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereCluster" target="app.j2ee.websphere.WebSphereCell"/>
+        <exclude relation="{any}" source="app.j2ee.websphere.WebSphereCell" target="app.j2ee.websphere.WebSphereCluster"/>
+        <!-- This prevents the scenario where a core queue manager brings in all other installed queue 
+             managers when lower down is selected for traversal -->
+        <exclude relation="{any}" source="app.messaging.mq.MQQueueManager" target="app.messaging.mq.MQInstallation"/>
+      </excludedRelationships>
+    </traversalConfiguration>
+    <tiers>
+      <tier>
+        <name>Computer Systems</name>
+        <rule>
+          <className>ComputerSystem</className>
+        </rule>
+      </tier>
+      <tier>
+        <name>App Servers</name>
+        <rule>
+          <className>AppServer</className>
+        </rule>
+      </tier>
+    </tiers>
+</xml>
