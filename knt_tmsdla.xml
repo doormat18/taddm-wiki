@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tmsdla:template xmlns:tmsdla="http://localhost.com/tmsdla"
+                 xmlns:cdm="http://localhost.com/cdm"
+                 product="NT" min_version="06.20.01">
+
+    <!--
+    This section contains the ComputerSystem and WindowsOperatingSystem and the associated relationship(s).  
+    It contains queries to retrieve the MAC address, IP address, and DNS name for 
+    the primary interface (the one with the lowest IP Address).      
+    Private networks are filtered out because objects' uniqueness would not be guaranteed. 
+    If you wish to try this in a private network you can remove the filter rows you are 
+    interested in. Make sure to do this consistently in all the cdm sections.
+    -->
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTCOMPINFO" where="ORIGINNODE='%{MSYSN}'" at="'%{THRUNODE}'" >
+                <tmsdla:define name="UUID_OVERLOADED" column="COMPUUID" >
+                    <tmsdla:define name="SYS_UUID" method="com.ibm.tivoli.monitoring.tmsdla.knt.SystemBoardUUID"/>
+                </tmsdla:define>
+                <tmsdla:define name="MANUFACTURER" column="COMPVEND"/>
+                <tmsdla:define name="SERIAL_OVERLOADED" column="COMPID" >
+                    <tmsdla:define name="SERIAL" method="com.ibm.csi.monitoring.tmsdla.VMwareSerialNumber" parm="%{MANUFACTURER}"/>
+                </tmsdla:define>
+                <tmsdla:define name="MODEL_OVERLOADED" column="COMPNAME" >
+                    <tmsdla:define name="MODEL" method="com.ibm.tivoli.monitoring.tmsdla.knt.Model"/>
+                </tmsdla:define>
+            </tmsdla:temsquery>
+            <tmsdla:temsquery table="KNT.WTSYSTEM" where="ORIGINNODE='%{MSYSN}'" at="'%{THRUNODE}'" >
+                <tmsdla:define name="OS_VERSION" column="VERSION"/>
+                <tmsdla:define name="OS_TYPE" column="OSTYPE">
+                    <tmsdla:define name="OS_NAME" method="com.ibm.tivoli.monitoring.tmsdla.knt.OSName"/>
+                </tmsdla:define>
+            </tmsdla:temsquery>
+            <!-- Select MAC address using lowest alpha-order IP address -->
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}'" at="'%{THRUNODE}'" sort="IPADDRESS">
+                <tmsdla:define name="LOWEST_IP_ADDR" column="IPADDRESS" default=""/>
+            </tmsdla:temsquery>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND IPADDRESS='%{IPADDR}'" at="'%{THRUNODE}'">
+               <tmsdla:define name="PRI_DNS_NAME" column="DNSNAME"/>
+            </tmsdla:temsquery>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND IPADDRESS='%{LOWEST_IP_ADDR}'" at="'%{THRUNODE}'">
+                <tmsdla:define name="MATCHING_MAC_ADDR_FORMATTED" column="MACADDRESS" function="MIN">
+                    <tmsdla:define name="MATCHING_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr"/>
+                </tmsdla:define>
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+            <tmsdla:filter name="IPADDR" exclude="169\.254\.182\.77"/>
+            <tmsdla:filter name="IPADDR" exclude="127\.0\.0\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.16\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.17\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.18\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.19\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.20\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.21\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.22\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.23\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.24\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.25\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.26\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.27\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.28\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.29\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.30\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.31\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="192\.168\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="::1"/>
+            <tmsdla:filter name="IPADDR" exclude="fc00:.+"/>
+            <tmsdla:filter name="IPADDR" exclude="FC00:.+"/>
+            <tmsdla:filter name="IPADDR" exclude="fe80:.+"/>
+            <tmsdla:filter name="IPADDR" exclude="FE80:.+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="169\.254\.182\.77"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="127\.0\.0\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.16\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.17\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.18\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.19\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.20\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.21\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.22\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.23\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.24\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.25\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.26\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.27\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.28\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.29\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.30\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="172\.31\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude="192\.168\..+"/>
+            <tmsdla:filter name="LOWEST_IP_ADDR" exclude=".*:.*:.*"/>
+        </tmsdla:filters>
+        <tmsdla:filters.Attributes>
+            <tmsdla:filter name="SERIAL" exclude="UNKNOWN" />
+            <tmsdla:filter name="SERIAL" exclude="" />
+            <tmsdla:filter name="SYS_UUID" exclude="unknown" />
+            <tmsdla:filter name="SYS_UUID" exclude="" />            
+            <tmsdla:filter name="MODEL" exclude="UNKNOWN" />
+            <tmsdla:filter name="MODEL" exclude="" />            
+            <tmsdla:filter name="PRI_DNS_NAME" exclude="NO_DNS_ENTRY" />
+            <tmsdla:filter name="PRI_DNS_NAME" exclude="" />
+            <tmsdla:filter name="MANUFACTURER" exclude="Unknown" />
+            <tmsdla:filter name="MANUFACTURER" exclude="" />
+            <tmsdla:filter name="MATCHING_MAC_ADDR" exclude="NOT_AVAILABLE" />            
+            <tmsdla:filter name="MATCHING_MAC_ADDR" exclude="" />
+        </tmsdla:filters.Attributes>
+        <cdm:sys.ComputerSystem id="%{IPADDR}-ComputerSystem" sourceToken="ip_address=%{IPADDR}" outputonce="true">
+            <cdm:ManagedSystemName>%{MSYSN}</cdm:ManagedSystemName>
+            <cdm:Name>%{FQHN}</cdm:Name>
+            <cdm:Signature>%{LOWEST_IP_ADDR}(%{MATCHING_MAC_ADDR})</cdm:Signature>
+            <cdm:Type>ComputerSystem</cdm:Type>
+            <cdm:Fqdn>%{PRI_DNS_NAME}</cdm:Fqdn>
+            <cdm:SystemBoardUUID>%{SYS_UUID}</cdm:SystemBoardUUID>
+            <cdm:SerialNumber>%{SERIAL}</cdm:SerialNumber>
+            <cdm:Manufacturer >%{MANUFACTURER}</cdm:Manufacturer>            
+            <cdm:Model>%{MODEL}</cdm:Model>
+         </cdm:sys.ComputerSystem>
+        <cdm:sys.windows.WindowsOperatingSystem id="%{IPADDR}-OperatingSystem" sourceToken="managed_system_name=%{MSYSN}&amp;object_id=p@%{MSYSN}" outputonce="true">
+            <cdm:ManagedSystemName>%{MSYSN}</cdm:ManagedSystemName>
+            <cdm:Name>Windows</cdm:Name>
+            <cdm:OSName>%{OS_NAME}</cdm:OSName>
+            <cdm:OSConfidence>100</cdm:OSConfidence>
+            <cdm:FQDN>%{PRI_DNS_NAME}</cdm:FQDN>
+            <cdm:OSVersion>%{OS_VERSION}</cdm:OSVersion>            
+        </cdm:sys.windows.WindowsOperatingSystem>
+        <cdm:runsOn source="%{IPADDR}-OperatingSystem" target="%{IPADDR}-ComputerSystem" outputonce="true"/>
+        <cdm:installedOn source="%{IPADDR}-OperatingSystem" target="%{IPADDR}-ComputerSystem" outputonce="true"/>
+    </tmsdla:cdmsection>
+
+    <!--                                                                              
+    This section contains the IpInterface object and associated relationship(s). 
+    It contains queries to retrieve the MACaddr and IPaddr for each IP interface.
+    A set of filters are also defined to exclude private networks.               
+    -->                                                                              
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}'" at="'%{THRUNODE}'" >
+                <tmsdla:define name="IF_NAME" column="INTFNAME" />
+                <tmsdla:define name="IF_IP_ADDR" column="IPADDRESS" />
+                <tmsdla:define name="IF_MAC_ADDR_FORMATTED" column="MACADDRESS" >
+                    <tmsdla:define name="IF_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr" />
+                </tmsdla:define>
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="169\.254\.182\.77"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="10\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="127\.0\.0\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.16\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.17\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.18\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.19\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.20\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.21\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.22\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.23\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.24\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.25\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.26\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.27\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.28\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.29\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.30\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.31\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="192\.168\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="::1"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fc00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FC00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fe80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FE80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="" />
+            <tmsdla:filter name="IPADDR" exclude="169\.254\.182\.77"/>
+            <tmsdla:filter name="IPADDR" exclude="10\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="127\.0\.0\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.16\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.17\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.18\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.19\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.20\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.21\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.22\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.23\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.24\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.25\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.26\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.27\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.28\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.29\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.30\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="172\.31\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="192\.168\..+"/>
+            <tmsdla:filter name="IPADDR" exclude="::1"/>
+            <tmsdla:filter name="IPADDR" exclude="fc00:.+"/>
+            <tmsdla:filter name="IPADDR" exclude="FC00:.+"/>
+            <tmsdla:filter name="IPADDR" exclude="fe80:.+"/>
+            <tmsdla:filter name="IPADDR" exclude="FE80:.+"/>
+        </tmsdla:filters>
+        <cdm:net.IpInterface id="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpInterface" sourceToken="ip_address=%{IF_IP_ADDR}&amp;mac_address=%{IF_MAC_ADDR}"/>
+        <cdm:contains source="%{IPADDR}-ComputerSystem" target="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpInterface"/>
+    </tmsdla:cdmsection>
+    
+           
+    <!-- 
+    This section contains the IpV4Address object and associated relationship(s). 
+    It contains queries to retrieve the IPaddr for each IPv4 address.
+    A set of filters are also defined to exclude private networks.               
+    -->                                                                              
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND IPVERSION=4" at="'%{THRUNODE}'" >
+                <tmsdla:define name="IF_IP_ADDR" column="IPADDRESS" />
+                <tmsdla:define name="IF_NAME" column="INTFNAME" />
+                <tmsdla:define name="IF_MAC_ADDR_FORMATTED" column="MACADDRESS" >
+                    <tmsdla:define name="IF_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr" />
+                </tmsdla:define>
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="169\.254\.182\.77"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="10\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="127\.0\.0\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.16\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.17\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.18\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.19\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.20\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.21\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.22\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.23\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.24\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.25\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.26\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.27\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.28\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.29\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.30\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.31\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="192\.168\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="" />
+        </tmsdla:filters>
+
+        <cdm:net.IpV4Address id="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpV4Address" sourceToken="ip_address=%{IF_IP_ADDR}">
+            <cdm:DotNotation>%{IF_IP_ADDR}</cdm:DotNotation>
+            <cdm:StringNotation>%{IF_IP_ADDR}</cdm:StringNotation>
+        </cdm:net.IpV4Address>
+        <cdm:bindsTo source="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpInterface" target="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpV4Address"/>
+    </tmsdla:cdmsection>
+
+    <!-- 
+    This section contains the IpV6Address object and associated relationship(s). 
+    It contains queries to retrieve the IPaddr for each IPv6 address.
+    A set of filters are also defined to exclude private networks.               
+    -->
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND IPVERSION=6" at="'%{THRUNODE}'" >
+                <tmsdla:define name="IF_IP_ADDR_CANONICAL" column="IPADDRESS">
+                    <tmsdla:define name="IF_IP_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.IPv6Addr"/>
+                </tmsdla:define>
+                <tmsdla:define name="IF_NAME" column="INTFNAME" />
+                <tmsdla:define name="IF_MAC_ADDR_FORMATTED" column="MACADDRESS" >
+                    <tmsdla:define name="IF_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr" />
+                </tmsdla:define>
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="0:0:0:0:0:0:0:1"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fc00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FC00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fe80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FE80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="" />
+        </tmsdla:filters>
+
+        <cdm:net.IpV6Address id="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpV6Address" sourceToken="ip_address=%{IF_IP_ADDR}">
+            <cdm:StringNotation>%{IF_IP_ADDR}</cdm:StringNotation>
+        </cdm:net.IpV6Address>
+        <cdm:bindsTo source="%{IF_NAME}:%{IF_IP_ADDR_CANONICAL}:%{IF_MAC_ADDR}-IpInterface" target="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpV6Address"/>
+    </tmsdla:cdmsection>
+
+    <!--                                                                               
+    This section contains the Fqdn object.                                        
+    It contains queries to retrieve the MACaddr and IPaddr for each IP interface. 
+    where the DNSNAME is not empty.  A set of filters are also defined to exclude 
+    private networks.                
+    -->                                                                               
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND DNSNAME&lt;&gt;'NO_DNS_ENTRY'" at="'%{THRUNODE}'" >
+                <tmsdla:define name="IF_IP_ADDR" column="IPADDRESS" />
+                <tmsdla:define name="IF_DNS_NAME" column="DNSNAME" />
+                <tmsdla:define name="IF_NAME" column="INTFNAME" />
+                <tmsdla:define name="IF_MAC_ADDR_FORMATTED" column="MACADDRESS" >
+                    <tmsdla:define name="IF_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr" />
+                </tmsdla:define>
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="169\.254\.182\.77"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="10\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="127\.0\.0\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.16\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.17\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.18\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.19\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.20\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.21\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.22\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.23\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.24\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.25\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.26\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.27\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.28\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.29\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.30\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="172\.31\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="192\.168\..+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="::1"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fc00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FC00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fe80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FE80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="" />
+            <tmsdla:filter name="IF_DNS_NAME" exclude="" />
+        </tmsdla:filters>
+
+        <cdm:net.Fqdn id="%{IF_NAME}:%{IF_DNS_NAME}-%{IF_IP_ADDR}:%{IF_MAC_ADDR}-Fqdn" sourceToken="ip_address=%{IF_IP_ADDR}&amp;mac_address=%{IF_MAC_ADDR}">
+            <cdm:Fqdn>%{IF_DNS_NAME}</cdm:Fqdn>
+        </cdm:net.Fqdn>
+    </tmsdla:cdmsection>
+
+    <!--                                                                               
+    This section contains relationships associated with the Fqdn and IpV4Address  
+    objects.  It contains queries to retrieve the DNSNAME and IPaddr for each IPv4 
+    address. A set of filters are also defined to exclude private networks.                
+    -->
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND IPVERSION=4 AND DNSNAME&lt;&gt;'NO_DNS_ENTRY'" at="'%{THRUNODE}'" >
+                <tmsdla:define name="IF_IP_ADDR" column="IPADDRESS" />
+                <tmsdla:define name="IF_DNS_NAME" column="DNSNAME" />
+                <tmsdla:define name="IF_NAME" column="INTFNAME" />
+                <tmsdla:define name="IF_MAC_ADDR_FORMATTED" column="MACADDRESS" >
+                    <tmsdla:define name="IF_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr" />
+                </tmsdla:define>
+
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="169\.254\.182\.77"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="10\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="127\.0\.0\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.16\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.17\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.18\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.19\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.20\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.21\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.22\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.23\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.24\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.25\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.26\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.27\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.28\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.29\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.30\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="172\.31\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="192\.168\..+"/>
+                <tmsdla:filter name="IF_IP_ADDR" exclude="" />
+                <tmsdla:filter name="IF_DNS_NAME" exclude="" />
+        </tmsdla:filters>
+        <cdm:assignedTo source="%{IF_NAME}:%{IF_DNS_NAME}-%{IF_IP_ADDR}:%{IF_MAC_ADDR}-Fqdn" target="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpV4Address"/>
+    </tmsdla:cdmsection>
+
+    <!--                                                                               
+    This section contains relationships associated with the Fqdn and IpV6Address  
+    objects.  It contains queries to retrieve the DNSNAME and IPaddr for each IPv6 
+    address.  A set of filters are also defined to exclude private networks.                
+    -->
+    <tmsdla:cdmsection>
+        <tmsdla:queries>
+            <tmsdla:temsquery table="KNT.NTIPADDR" where="ORIGINNODE='%{MSYSN}' AND IPVERSION=6 AND DNSNAME&lt;&gt;'NO_DNS_ENTRY'" at="'%{THRUNODE}'" >
+                <tmsdla:define name="IF_IP_ADDR_CANONICAL" column="IPADDRESS">
+                    <tmsdla:define name="IF_IP_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.IPv6Addr"/>
+                </tmsdla:define>
+                <tmsdla:define name="IF_NAME" column="INTFNAME" />
+                <tmsdla:define name="IF_MAC_ADDR_FORMATTED" column="MACADDRESS" >
+                    <tmsdla:define name="IF_MAC_ADDR" method="com.ibm.tivoli.monitoring.tmsdla.MACAddr" />
+                </tmsdla:define>
+
+                <tmsdla:define name="IF_DNS_NAME" column="DNSNAME"/>
+            </tmsdla:temsquery>
+        </tmsdla:queries>
+        <tmsdla:filters>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="0:0:0:0:0:0:0:1"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fc00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FC00:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="fe80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="FE80:.+"/>
+            <tmsdla:filter name="IF_IP_ADDR" exclude="" />
+            <tmsdla:filter name="IF_DNS_NAME" exclude="" />
+        </tmsdla:filters>
+        <cdm:assignedTo source="%{IF_NAME}:%{IF_DNS_NAME}-%{IF_IP_ADDR_CANONICAL}:%{IF_MAC_ADDR}-Fqdn" target="%{IF_NAME}:%{IF_IP_ADDR}:%{IF_MAC_ADDR}-IpV6Address"/>
+    </tmsdla:cdmsection>
+
+</tmsdla:template>

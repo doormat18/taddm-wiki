@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tmsdla:template product="" >
+
+    <tmsdla:cdmsection>
+        <cdm:process.Organization id="&lt;Tivoli Monitoring&gt;-Organization">
+            <cdm:GlobalName >&lt;defaultOrg&gt;</cdm:GlobalName>
+            <cdm:Label>&lt;defaultOrg&gt;</cdm:Label>
+        </cdm:process.Organization>
+    </tmsdla:cdmsection>
+
+</tmsdla:template>
